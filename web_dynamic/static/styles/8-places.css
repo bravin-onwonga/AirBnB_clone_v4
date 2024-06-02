@@ -103,13 +103,3 @@
 .popover li {
   margin-right: 10px;
 }
-
-#api_status {
-  margin-top: -55px;
-  float: right;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin-left: 30px;
-  background-color: #cccccc;
-}
