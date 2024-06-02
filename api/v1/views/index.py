@@ -14,7 +14,7 @@ from flask import jsonify
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
     """ Status of API """
-    return jsonify({"status": "OK"})
+    return jsonify({"status": "OK"}), 200
 
 
 @app_views.route('/stats', methods=['GET'], strict_slashes=False)
@@ -27,4 +27,4 @@ def number_objects():
     for i in range(len(classes)):
         num_objs[names[i]] = storage.count(classes[i])
 
-    return jsonify(num_objs)
+    return jsonify(num_objs), 200
