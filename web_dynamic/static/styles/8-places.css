@@ -99,3 +99,7 @@
 .user {
   margin-bottom: 1.5%;
 }
+
+.popover li {
+  margin-right: 10px;
+}
