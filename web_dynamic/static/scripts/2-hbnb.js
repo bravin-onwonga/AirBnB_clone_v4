@@ -59,20 +59,18 @@ $(document).ready($(function () {
   const url = 'http://0.0.0.0:5001/api/v1/status/';
 
   function getStatus () {
-    $.get(url, function(res, status) {
-      if (res.status === 'OK') {
+    $.get(url, function (res, status) {
+      if (status === 'success' && res.status === 'OK') {
         if (!$('div#api_status').hasClass('available')) {
           $('div#api_status').addClass('available');
         }
       } else {
-        console.log('Unavailable');
-        if ($('div#api_status').hasClass('available')) {
-          $('div#api_status').removeClass('available');
+        if ($(!'div#api_status').hasClass('available')) {
+          $('div#api_status').addClass('available');
         }
       }
     });
   }
 
   getStatus();
-
 }));
