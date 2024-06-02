@@ -53,6 +53,7 @@ $(document).ready($(function () {
       }
     }
     updateAmenitiesH4();
+    getPlaces();
   });
   updateAmenitiesH4();
 
@@ -64,6 +65,7 @@ $(document).ready($(function () {
         if (!$('div#api_status').hasClass('available')) {
           $('div#api_status').addClass('available');
         }
+        getPlaces();
       } else {
         if ($('div#api_status').hasClass('available')) {
           $('div#api_status').removeClass('available');
@@ -74,34 +76,38 @@ $(document).ready($(function () {
 
   getStatus();
 
-  $.ajax({
-    type: 'POST',
-    url: 'http://0.0.0.0:5001/api/v1/places_search/',
-    data: '{}',
-    contentType: 'application/json',
-    success: function (response) {
-      $.each(response, function (index, place) {
-        const placeElement = `
-        <article>
-          <div class="title_box">
-            <h2>${place.name}</h2>
-            <div class="price_by_night">$${place.price_by_night}</div>
-          </div>
-          <div class="information">
-            <div class="max_guest">${place.max_guest}Guest${place.max_guest !== 1 ? 's' : ''}</div>
-            <div class="number_rooms">${place.number_rooms} Bedroom${place.number_rooms !== 1 ? 's' : ''}</div>
-            <div class="number_bathrooms">${place.number_bathrooms} Bathroom${place.number_bathrooms !== 1 ? 's' : ''}</div>
-          </div>
-          <div class="description">
-            ${place.description || 'Safe'}
-          </div>
-        </article>`;
+  function getPlaces () {
+    $.ajax({
+      type: 'POST',
+      url: 'http://0.0.0.0:5001/api/v1/places_search/',
+      data: JSON.stringify({ amenities: lst }),
+      contentType: 'application/json',
+      success: function (response) {
+        $('section.places').empty();
+        $.each(response, function (index, place) {
+          const placeElement = `
+          <article>
+            <div class="title_box">
+              <h2>${place.name}</h2>
+              <div class="price_by_night">$${place.price_by_night}</div>
+            </div>
+            <div class="information">
+              <div class="max_guest">${place.max_guest} Guest${place.max_guest !== 1 ? 's' : ''}</div>
+              <div class="number_rooms">${place.number_rooms} Bedroom${place.number_rooms !== 1 ? 's' : ''}</div>
+              <div class="number_bathrooms">${place.number_bathrooms} Bathroom${place.number_bathrooms !== 1 ? 's' : ''}</div>
+            </div>
+            <div class="description">
+              ${place.description || 'Safe'}
+            </div>
+          </article>`;
 
-        $('section.places').append(placeElement);
-      });
-    },
-    error: function (error) {
-      console.log('Error:', error)
-    }
-  });
+          $('section.places').append(placeElement);
+        });
+      },
+      error: function (error) {
+        console.log('Error:', error);
+      }
+    });
+  }
+  getPlaces();
 }));
