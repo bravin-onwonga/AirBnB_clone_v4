@@ -1,46 +1,69 @@
-#!/usr/bin/python3
-""" Starts a Flash Web Application """
-from models import storage
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from os import environ
-from flask import Flask, render_template
-import uuid
-app = Flask(__name__)
-# app.jinja_env.trim_blocks = True
-# app.jinja_env.lstrip_blocks = True
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="../static/styles/4-common.css?{{ cache_id }}">
+  <link rel="stylesheet" type="text/css" href="../static/styles/3-header.css?{{ cache_id }}">
+  <link rel="stylesheet" type="text/css" href="../static/styles/3-footer.css?{{ cache_id }}">
+  <link rel="stylesheet" type="text/css" href="../static/styles/6-filters.css?{{ cache_id }}">
+  <link type="text/css" rel="stylesheet" href="../static/styles/8-places.css?{{ cache_id }}">
+  <link rel="icon" href="../static/images/icon.png?{{ cache_id }}" />
+  <title>HBnB</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../static/scripts/101-hbnb.js"></script>
+</head>
 
-@app.teardown_appcontext
-def close_db(error):
-    """ Remove the current SQLAlchemy Session """
-    storage.close()
+<body>
+  <header>
+    <div class="logo"></div>
+    <div id="api_status"></div>
+  </header>
+  <div class="container">
+    <section class="filters">
+      <div class="locations">
+        <h3>States</h3>
+        <h4>&nbsp;</h4>
+        <div class="popover">
+          <ul>
+            {% for state in states %}
+            <li>
+              <input class="state_input" type="checkbox" data-id={{ state[0].id }} data-name={{ state[0].name }}>
+              <h2>{{ state[0].name }}:</h2>
+              <ul>
+                {% for city in state[1] %}
+                <li><input type="checkbox" class="city_input" data-id={{ city.id }} data-name={{ city.name }}>{{
+                  city.name }}</li>
+                {% endfor %}
+              </ul>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="amenities">
+        <h3>Amenities</h3>
+        <h4>&nbsp;</h4>
+        <div class="popover">
+          <ul>
+            {% for amenity in amenities %}
+            <li><input type="checkbox" data-id={{ amenity.id }} data-name={{ amenity.name }}>{{ amenity.name }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <button type="button">Search</button>
+    </section>
+    <div class="placesh1">
+      <h1>Places</h1>
+    </div>
+    <section class="places">
+      <!-- <h1>Places</h1> -->
+    </section>
+  </div>
+  <footer>
+    <p>Holberton School</p>
+  </footer>
+</body>
 
-
-@app.route('/101-hbnb', strict_slashes=False)
-def hbnb():
-    """ HBNB is alive! """
-    states = storage.all(State).values()
-    states = sorted(states, key=lambda k: k.name)
-    st_ct = []
-
-    for state in states:
-        st_ct.append([state, sorted(state.cities, key=lambda k: k.name)])
-
-    amenities = storage.all(Amenity).values()
-    amenities = sorted(amenities, key=lambda k: k.name)
-
-    places = storage.all(Place).values()
-    places = sorted(places, key=lambda k: k.name)
-
-    return render_template('101-hbnb.html',
-                           states=st_ct,
-                           amenities=amenities,
-                           places=places, cache_id=uuid.uuid4())
-
-
-if __name__ == "__main__":
-    """ Main Function """
-    app.run(host='0.0.0.0', port=5000)
+</html>

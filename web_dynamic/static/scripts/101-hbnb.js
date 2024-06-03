@@ -23,9 +23,11 @@ function checkedObjects (nObject) {
   }
   const names = Object.keys(obj);
   if (nObject === 1) {
-    $('.amenities h4').text(names.sort().join(', '));
+    const namesStr = names.join(', ');
+    $('.amenities h4').text(namesStr);
   } else if (nObject === 2) {
-    $('.locations h4').text(names.sort().join(', '));
+    const namesStr = names.join(', ');
+    $('.locations h4').text(namesStr);
   }
 }
 
