@@ -57,7 +57,7 @@ $(document).ready($(function () {
   });
   updateAmenitiesH4();
 
-  const url = 'http://0.0.0.0:5001/api/v1/status/';
+  const url = 'http://localhost:5001/api/v1/status/';
 
   function getStatus () {
     $.get(url, function (res, status) {
@@ -79,7 +79,7 @@ $(document).ready($(function () {
   function getPlaces () {
     $.ajax({
       type: 'POST',
-      url: 'http://0.0.0.0:5001/api/v1/places_search/',
+      url: 'http://localhost:5001/api/v1/places_search/',
       data: JSON.stringify({ amenities: lst }),
       contentType: 'application/json',
       success: function (response) {

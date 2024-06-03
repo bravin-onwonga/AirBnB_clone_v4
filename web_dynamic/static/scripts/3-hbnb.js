@@ -101,7 +101,7 @@ $(document).ready($(function () {
       });
     },
     error: function (error) {
-      console.log('Error:', error)
+      console.log('Error:', error);
     }
   });
 }));
